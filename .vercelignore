@@ -1,0 +1,8 @@
+# Only deploy the built dist/ and public/ directories
+# Ignore ALL source files and config
+*
+!dist/
+!public/
+!package.json
+!package-lock.json
+!vercel.json
