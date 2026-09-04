@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { Reveal, WordReveal } from "./reveal";
 
 const STATS = [
-  { value: 48200, suffix: "+", label: "Users" },
-  { value: 128, suffix: "", label: "Scripts" },
-  { value: 2.4, suffix: "M", label: "Downloads", decimals: 1 },
+  { value: 17526, suffix: "+", label: "Users" },
+  { value: 158, suffix: "", label: "Scripts" },
+  { value: 1, suffix: "M", label: "execution", decimals: 1 },
   { value: 12, suffix: "", label: "Executors" },
 ] as const;
 
