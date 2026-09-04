@@ -37,9 +37,7 @@ export function Nav() {
         )}
       >
         <a href="#top" className="flex items-center gap-2.5">
-          <span className="grid size-8 place-items-center rounded-md bg-fg text-[11px] font-semibold tracking-tight text-accent-fg">
-            W
-          </span>
+          <img src="/logo.svg" alt="" width={32} height={32} className="size-8 rounded-md" />
           <span className="font-display text-[15px] font-semibold tracking-tight">Writz Hub</span>
         </a>
 
