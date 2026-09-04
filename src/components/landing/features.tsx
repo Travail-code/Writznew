@@ -9,31 +9,31 @@ const FEATURES: {
 }[] = [
   {
     title: "Keyless",
-    body: "Direct execution. No key system, no ads, no waiting. Inject and it runs.",
+    body: "Keyless bug only for the hub after you can found game have key system but not all.",
     icon: Shield,
   },
   {
     title: "Instant",
-    body: "Lightweight loader, compact runtime. The hub opens in milliseconds, even on light executors.",
+    body: "Fast hub, 0 lag, we update that",
     icon: Zap,
   },
   {
     title: "Universal",
-    body: "One library for dozens of games. Farm, ESP, teleport, auto — sorted, tested, versioned.",
+    body: "We use our library system work on every game",
     icon: Layers,
   },
   {
     title: "Auto-update",
-    body: "The loader always pulls the latest build. No need to redownload every patch.",
+    body: "We update when we found a bug, add a game or add security",
     icon: RefreshCw,
   },
   {
-    title: "Premium UI",
-    body: "Dark panel, readable, built for the grind. Shortcuts, search, categories — zero friction.",
+    title: "Tuff UI",
+    body: "Dark panel, classic theme, Small UI and rly cool",
     icon: Terminal,
   },
   {
-    title: "Multi-executors",
+    title: "Every exec",
     body: "Xeno, Solara, Delta, Wave, Swift, Codex. One loadstring, every runtime.",
     icon: Gauge,
   },
