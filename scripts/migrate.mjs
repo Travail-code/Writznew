@@ -16,7 +16,6 @@ import { readdir, readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import pg from "pg";
-import { pendingMigrations } from "./migration-plan.mjs";
 
 const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) {
@@ -27,6 +26,19 @@ if (!databaseUrl) {
 }
 
 const migrationsDir = join(dirname(fileURLToPath(import.meta.url)), "..", "migrations");
+
+function isMigrationFile(name) {
+  return name.endsWith(".sql") && !name.startsWith(".");
+}
+
+function pendingMigrations(entries, applied) {
+  const appliedSet = new Set(applied);
+  return entries
+    .filter(isMigrationFile)
+    .sort()
+    .filter((name) => !appliedSet.has(name))
+    .map((name) => ({ name }));
+}
 
 async function main() {
   let entries;
