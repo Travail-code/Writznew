@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowDownRight, Check, Copy } from "lucide-react";
+import { ArrowDownRight, Check, Copy, Play, Trash2, X } from "lucide-react";
 import { GlowButton } from "./glow-button";
 import { useMounted } from "./hooks";
 import { LOADSTRING } from "./download";
@@ -37,10 +37,7 @@ export function Hero() {
       id="top"
       className="relative z-10 flex min-h-svh flex-col items-center justify-center px-5 pb-20 pt-28 text-center"
     >
-      <div
-        className={cnReady(mounted)}
-        style={{ transitionDelay: "40ms" }}
-      >
+      <div className={cnReady(mounted)} style={{ transitionDelay: "40ms" }}>
         <span className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-muted shadow-[0_0_0_1px_rgb(255_255_255_/_0.1)]">
           <span className="status-pulse size-1.5 rounded-full bg-fg" />
           Script hub · 2026
@@ -57,29 +54,72 @@ export function Hero() {
         {TITLE}
       </h1>
 
+      {/* Fake Executor */}
       <div
         id="download"
-        className={cnReady(mounted, "mx-auto mt-8 w-full max-w-xl")}
+        className={cnReady(mounted, "mx-auto mt-10 w-full max-w-[540px] text-left")}
         style={{ transitionDelay: "280ms" }}
       >
-        <div className="overflow-hidden rounded-md bg-bg/70 text-left shadow-[0_0_0_1px_rgb(255_255_255_/_0.08)]">
-          <div className="flex items-center justify-between border-b border-line px-4 py-2">
-            <span className="font-mono text-[11px] text-faint">loader.lua</span>
-            <span className="font-mono text-[10px] uppercase tracking-wider text-faint">Luau</span>
+        <div className="overflow-hidden rounded-[10px] bg-[#0c0c0e] shadow-[0_0_0_1px_rgb(40_40_48),0_24px_80px_rgb(0_0_0_/_0.55)]">
+          {/* Title bar */}
+          <div className="flex h-9 items-center justify-between border-b border-white/5 bg-[#121216] px-3">
+            <span className="font-display text-[13px] font-semibold tracking-tight text-[#e6e6eb]">
+              Writz Hub&nbsp;·&nbsp;Executor
+            </span>
+            <span className="grid size-7 place-items-center rounded-md bg-[#1c1c22] text-[#c8c8d2]">
+              <X className="size-3.5" strokeWidth={2.5} />
+            </span>
           </div>
-          <pre className="overflow-x-auto px-4 py-3 font-mono text-[12px] leading-relaxed text-fg md:text-[13px]">
-            {LOADSTRING}
-          </pre>
+
+          {/* Script box with loadstring */}
+          <div className="px-3.5 pt-3">
+            <div className="min-h-[120px] rounded-lg bg-[#08080a] px-3 py-2.5 font-mono text-[12px] leading-relaxed text-[#b4ffb4] md:text-[13px]">
+              <span className="select-all">{LOADSTRING}</span>
+            </div>
+          </div>
+
+          {/* Buttons row */}
+          <div className="flex flex-wrap gap-2 px-3.5 py-3.5">
+            <button
+              type="button"
+              onClick={copy}
+              className="inline-flex h-8 items-center gap-1.5 rounded-md bg-[#28a05a] px-3.5 text-[12px] font-medium text-white transition hover:bg-[#2fb368] active:scale-[0.97]"
+            >
+              {copied ? <Check className="size-3.5" /> : <Play className="size-3.5" />}
+              {copied ? "Copied" : "Execute"}
+            </button>
+            <button
+              type="button"
+              onClick={copy}
+              className="inline-flex h-8 items-center gap-1.5 rounded-md bg-[#46464a] px-3.5 text-[12px] font-medium text-white transition hover:bg-[#55555a] active:scale-[0.97]"
+            >
+              <Copy className="size-3.5" />
+              Copy
+            </button>
+            <button
+              type="button"
+              className="inline-flex h-8 items-center gap-1.5 rounded-md bg-[#32323c] px-3.5 text-[12px] font-medium text-white/80 transition hover:bg-[#3c3c48] active:scale-[0.97]"
+            >
+              <Trash2 className="size-3.5" />
+              Clear
+            </button>
+            <a
+              href="/loader.lua"
+              download="loader.lua"
+              className="inline-flex h-8 items-center gap-1.5 rounded-md bg-[#4664c8] px-3.5 text-[12px] font-medium text-white transition hover:bg-[#5574d8] active:scale-[0.97]"
+            >
+              Load Hub
+            </a>
+          </div>
         </div>
-        <div className="mt-3 flex justify-center">
-          <GlowButton onClick={copy} icon={copied ? <Check className="size-4" /> : <Copy className="size-4" />}>
-            {copied ? "Copied" : "Copy loadstring"}
-          </GlowButton>
-        </div>
+
+        <p className="mt-3 text-center font-mono text-[11px] text-faint">
+          Colle le loadstring dans ton executor · ou télécharge le .lua
+        </p>
       </div>
 
       <p
-        className={cnReady(mounted, "mx-auto mt-7 max-w-xl text-base leading-relaxed text-muted md:text-lg")}
+        className={cnReady(mounted, "mx-auto mt-8 max-w-xl text-base leading-relaxed text-muted md:text-lg")}
         style={{ transitionDelay: "380ms" }}
       >
         Run your scripts with surgical precision. Premium interface,
