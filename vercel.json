@@ -2,20 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "npm run build",
   "installCommand": "npm install",
-  "rewrites": [
-    {
-      "source": "/(.*)\\.(ts|tsx|js|jsx|mjs|cjs)$",
-      "destination": "/"
-    },
-    {
-      "source": "/(vite|tsconfig|package|package-lock)\\.(json|ts|mjs)$",
-      "destination": "/"
-    },
-    {
-      "source": "/src/(.*)",
-      "destination": "/"
-    }
-  ],
+  "headers": [
   "headers": [
     {
       "source": "/(.*)",
