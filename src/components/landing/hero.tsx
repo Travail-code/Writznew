@@ -212,7 +212,7 @@ export function Hero() {
         </div>
 
         <p className="mt-3 text-center font-mono text-[11px] text-faint">
-          Copy le loadstring — colle-le dans ton executor
+          Copy the loadstring — paste it into your executor
         </p>
       </div>
 
