@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Check, Copy, Download } from "lucide-react";
+import { Check, Copy, Download, Play, Trash2, X } from "lucide-react";
 import { GlowButton } from "./glow-button";
 import { Reveal, WordReveal } from "./reveal";
 
 export const LOADSTRING =
-  'loadstring(game:HttpGet("https://writzhub.dev/loader.lua"))()';
+  'loadstring(game:HttpGet("https://writzzzzzz.vercel.app/loader.lua"))()';
 
 const EXECUTORS = ["Xeno", "Solara", "Delta", "Wave", "Swift", "Codex"];
 
@@ -37,7 +37,7 @@ export function DownloadSection() {
   };
 
   return (
-    <section id="download" className="relative z-10 mx-auto max-w-6xl px-5 py-24 md:px-8 md:py-32">
+    <section id="download-section" className="relative z-10 mx-auto max-w-6xl px-5 py-24 md:px-8 md:py-32">
       <div className="glass-strong overflow-hidden rounded-xl px-6 py-12 md:px-14 md:py-16">
         <Reveal>
           <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-faint">Download</p>
@@ -53,14 +53,45 @@ export function DownloadSection() {
         </Reveal>
 
         <Reveal delay={140}>
-          <div className="mt-8 overflow-hidden rounded-md bg-bg/70 shadow-[0_0_0_1px_rgb(255_255_255_/_0.08)]">
-            <div className="flex items-center justify-between border-b border-line px-4 py-2">
-              <span className="font-mono text-[11px] text-faint">loader.lua</span>
-              <span className="font-mono text-[10px] uppercase tracking-wider text-faint">Luau</span>
+          <div className="mt-8 overflow-hidden rounded-[10px] bg-[#0c0c0e] shadow-[0_0_0_1px_rgb(40_40_48)]">
+            <div className="flex h-9 items-center justify-between border-b border-white/5 bg-[#121216] px-3">
+              <span className="font-display text-[13px] font-semibold tracking-tight text-[#e6e6eb]">
+                Writz Hub&nbsp;·&nbsp;Executor
+              </span>
+              <span className="grid size-7 place-items-center rounded-md bg-[#1c1c22] text-[#c8c8d2]">
+                <X className="size-3.5" strokeWidth={2.5} />
+              </span>
             </div>
-            <pre className="overflow-x-auto px-4 py-4 font-mono text-[12px] leading-relaxed text-fg md:text-[13px]">
-              {LOADSTRING}
-            </pre>
+            <div className="px-3.5 pt-3">
+              <div className="min-h-[88px] rounded-lg bg-[#08080a] px-3 py-2.5 font-mono text-[12px] leading-relaxed text-[#b4ffb4] md:text-[13px]">
+                <span className="select-all">{LOADSTRING}</span>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2 px-3.5 py-3.5">
+              <button
+                type="button"
+                onClick={copy}
+                className="inline-flex h-8 items-center gap-1.5 rounded-md bg-[#28a05a] px-3.5 text-[12px] font-medium text-white transition hover:bg-[#2fb368]"
+              >
+                {copied ? <Check className="size-3.5" /> : <Play className="size-3.5" />}
+                {copied ? "Copied" : "Execute"}
+              </button>
+              <button
+                type="button"
+                onClick={copy}
+                className="inline-flex h-8 items-center gap-1.5 rounded-md bg-[#46464a] px-3.5 text-[12px] font-medium text-white transition hover:bg-[#55555a]"
+              >
+                <Copy className="size-3.5" />
+                Copy
+              </button>
+              <button
+                type="button"
+                className="inline-flex h-8 items-center gap-1.5 rounded-md bg-[#32323c] px-3.5 text-[12px] font-medium text-white/80"
+              >
+                <Trash2 className="size-3.5" />
+                Clear
+              </button>
+            </div>
           </div>
         </Reveal>
 
