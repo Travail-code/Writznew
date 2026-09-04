@@ -5,14 +5,11 @@
     Paste this entire script into your executor.
 ]]
 
-local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
-local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 local CoreGui = game:GetService("CoreGui")
 
-local LocalPlayer = Players.LocalPlayer
-local HUB_URL = "https://writzhub.dev/loader.lua"
+local HUB_URL = "https://writzzzzzz.vercel.app/loader.lua"
 
 -- Clean previous instance
 pcall(function()
@@ -176,7 +173,6 @@ KillBtn.MouseButton1Click:Connect(function()
     ScreenGui:Destroy()
 end)
 
--- Embedded loader: fetches & runs the official Writz Hub loader
 LoadHubBtn.MouseButton1Click:Connect(function()
     LoadHubBtn.Text = "Loading..."
     LoadHubBtn.BackgroundColor3 = Color3.fromRGB(50, 70, 140)
@@ -209,7 +205,6 @@ LoadHubBtn.MouseButton1Click:Connect(function()
     end
 end)
 
--- Keyboard shortcut: Ctrl+Enter = Execute
 UserInputService.InputBegan:Connect(function(input, processed)
     if processed then return end
     if input.KeyCode == Enum.KeyCode.Return and UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then
