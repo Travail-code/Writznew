@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { ArrowDownRight, Check, Copy, Play, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { ArrowDownRight, Check, Copy, Trash2 } from "lucide-react";
 import { GlowButton } from "./glow-button";
 import { useMounted } from "./hooks";
 import { LOADSTRING } from "./download";
@@ -11,7 +11,6 @@ export function Hero() {
   const [copied, setCopied] = useState(false);
   const [tab, setTab] = useState<"editor" | "output">("editor");
   const [logs, setLogs] = useState<string[]>(["Ready."]);
-  const [flash, setFlash] = useState(false);
   const [runId, setRunId] = useState(0);
 
   const copy = async () => {
@@ -33,27 +32,17 @@ export function Hero() {
       ta.remove();
     }
     setCopied(true);
-    window.setTimeout(() => setCopied(false), 1800);
-  };
-
-  const execute = async () => {
-    await copy();
-    setFlash(true);
     setTab("output");
     setRunId((n) => n + 1);
-    setLogs(["Executing…", "HttpGet loader.lua", "Injected.", "Done."]);
+    setLogs(["Copied to clipboard.", "Paste into your executor."]);
+    window.setTimeout(() => setCopied(false), 1800);
   };
-
-  useEffect(() => {
-    if (!flash) return;
-    const t = window.setTimeout(() => setFlash(false), 700);
-    return () => window.clearTimeout(t);
-  }, [flash]);
 
   return (
     <section
       id="top"
       className="relative z-10 flex min-h-svh flex-col items-center justify-center px-5 pb-20 pt-28 text-center"
+      style={{ perspective: "1200px" }}
     >
       <div className={cnReady(mounted)} style={{ transitionDelay: "40ms" }}>
         <span className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-muted shadow-[0_0_0_1px_rgb(255_255_255_/_0.1)]">
@@ -75,19 +64,25 @@ export function Hero() {
       <div
         id="download"
         className={cnReady(mounted, "mx-auto mt-10 w-full max-w-[520px] text-left")}
-        style={{ transitionDelay: "280ms" }}
+        style={{
+          transitionDelay: "280ms",
+          transformStyle: "preserve-3d",
+        }}
       >
         <div
-          className={
-            "overflow-hidden rounded-md bg-bg transition-[box-shadow] duration-500 " +
-            (flash
-              ? "shadow-[0_0_0_1px_rgb(255_255_255_/_0.35),0_24px_60px_rgb(0_0_0_/_0.45),0_0_48px_rgb(255_255_255_/_0.08)]"
-              : "shadow-[0_0_0_1px_rgb(255_255_255_/_0.1),0_24px_60px_rgb(0_0_0_/_0.45)]")
-          }
+          className="executor-3d group relative overflow-hidden rounded-md bg-bg shadow-[0_0_0_1px_rgb(255_255_255_/_0.1),0_24px_60px_rgb(0_0_0_/_0.45)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:[transform:rotateX(4deg)_rotateY(-6deg)_translateZ(12px)]"
+          style={{ transformStyle: "preserve-3d" }}
         >
           {/* Header */}
           <div className="flex h-10 items-center justify-between border-b border-line px-4">
             <div className="flex items-center gap-3">
+              {/* Spinning logo */}
+              <span
+                className="grid size-6 place-items-center rounded-full shadow-[0_0_0_1px_rgb(255_255_255_/_0.14)]"
+                aria-hidden
+              >
+                <span className="executor-spin block size-3.5 rounded-[3px] bg-fg" />
+              </span>
               <span className="font-display text-[13px] font-semibold tracking-tight text-fg">
                 Executor
               </span>
@@ -134,7 +129,7 @@ export function Hero() {
           {/* Body */}
           <div className="relative min-h-[132px] border-b border-line">
             {tab === "editor" ? (
-              <div className="flex min-h-[132px] animate-[fadeSlide_400ms_cubic-bezier(0.22,1,0.36,1)]">
+              <div className="flex min-h-[132px]">
                 <div className="select-none border-r border-line px-2.5 py-3 text-right font-mono text-[11px] leading-6 text-faint/50">
                   <div>1</div>
                   <div>2</div>
@@ -149,11 +144,9 @@ export function Hero() {
                 {logs.map((line, i) => (
                   <div
                     key={`${runId}-${line}-${i}`}
-                    className={
-                      "opacity-0 " +
-                      (i === logs.length - 1 ? "text-fg" : "")
-                    }
+                    className={i === logs.length - 1 ? "text-fg" : ""}
                     style={{
+                      opacity: 0,
                       animation: `fadeSlide 420ms cubic-bezier(0.22,1,0.36,1) ${i * 90}ms forwards`,
                     }}
                   >
@@ -164,11 +157,11 @@ export function Hero() {
             )}
           </div>
 
-          {/* Actions */}
+          {/* Actions — copy only */}
           <div className="flex flex-wrap items-center gap-2 px-3 py-3">
             <button
               type="button"
-              onClick={execute}
+              onClick={copy}
               className="inline-flex h-9 items-center gap-2 rounded-full bg-fg px-5 text-[12px] font-medium text-accent-fg transition duration-200 hover:opacity-90 active:scale-[0.96]"
             >
               <span className="relative flex size-3.5 items-center justify-center">
@@ -178,22 +171,14 @@ export function Hero() {
                     (copied ? "scale-100 opacity-100" : "scale-75 opacity-0")
                   }
                 />
-                <Play
+                <Copy
                   className={
                     "absolute size-3.5 transition duration-200 " +
                     (copied ? "scale-75 opacity-0" : "scale-100 opacity-100")
                   }
                 />
               </span>
-              {copied ? "Copied" : "Execute"}
-            </button>
-            <button
-              type="button"
-              onClick={copy}
-              className="inline-flex h-9 items-center gap-2 rounded-full px-4 text-[12px] font-medium text-fg shadow-[0_0_0_1px_rgb(255_255_255_/_0.12)] transition duration-200 hover:bg-fg/5 active:scale-[0.96]"
-            >
-              <Copy className="size-3.5" />
-              Copy
+              {copied ? "Copied" : "Copy"}
             </button>
             <button
               type="button"
@@ -202,7 +187,7 @@ export function Hero() {
                 setLogs(["Cleared."]);
                 setTab("output");
               }}
-              className="inline-flex h-9 items-center gap-2 rounded-full px-4 text-[12px] font-medium text-muted transition duration-200 hover:text-fg active:scale-[0.96]"
+              className="inline-flex h-9 items-center gap-2 rounded-full px-4 text-[12px] font-medium text-muted shadow-[0_0_0_1px_rgb(255_255_255_/_0.12)] transition duration-200 hover:text-fg active:scale-[0.96]"
             >
               <Trash2 className="size-3.5" />
               Clear
@@ -227,7 +212,7 @@ export function Hero() {
         </div>
 
         <p className="mt-3 text-center font-mono text-[11px] text-faint">
-          Execute copie le loadstring — colle-le dans ton executor
+          Copy le loadstring — colle-le dans ton executor
         </p>
       </div>
 
@@ -259,6 +244,17 @@ export function Hero() {
         @keyframes fadeSlide {
           from { opacity: 0; transform: translateY(6px); }
           to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes spin3d {
+          from { transform: rotateY(0deg) rotateX(12deg); }
+          to { transform: rotateY(360deg) rotateX(12deg); }
+        }
+        .executor-spin {
+          animation: spin3d 3.2s linear infinite;
+          transform-style: preserve-3d;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .executor-spin { animation: none; }
         }
       `}</style>
     </section>
