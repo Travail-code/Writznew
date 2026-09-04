@@ -49,9 +49,9 @@ export const CHANGELOG: ChangelogEntry[] = [
     date: "2026-09-02",
     tag: "latest",
     changes: [
-      "Public landing page with loadstring copy",
-      "Status page and changelog",
-      "Compatible executors showcase",
+      "Add a website",
+      "Add 10 games",
+      "Add security",
     ],
   },
   {
@@ -61,15 +61,14 @@ export const CHANGELOG: ChangelogEntry[] = [
     changes: [
       "Keyless loader",
       "Auto-update pipeline",
-      "Multi-executor support",
+      "Every exec suport",
     ],
   },
   {
     version: "1.0",
     date: "2026-08-01",
     changes: [
-      "Initial release",
-      "Core script library",
+      "Post BETA script",
       "Basic UI panel",
     ],
   },
