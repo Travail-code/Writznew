@@ -9,7 +9,7 @@ import { nitro } from "nitro/vite";
 // @ts-expect-error JS plugin alongside the TS vite config
 import { appEnvPlugin } from "./scripts/app-env-plugin.mjs";
 
-/** The files `src/lib/db.ts` globs  same directory, same non-recursive scope. */
+/** The files `src/lib/db.ts` globs — same directory, same non-recursive scope. */
 function hasGlobbedMigrations(root: string): boolean {
   try {
     return readdirSync(join(root, "migrations")).some(
@@ -26,7 +26,7 @@ function hasGlobbedMigrations(root: string): boolean {
  * on import.
  *
  * Vite awaiting the hook puts this on time-to-first-render, so an app with no
- * migrations  no schema to apply  skips it entirely rather than paying for a
+ * migrations — no schema to apply — skips it entirely rather than paying for a
  * PGLite instance it never queries.
  */
 function pgliteBootstrapPlugin(): Plugin {
@@ -50,7 +50,41 @@ function pgliteBootstrapPlugin(): Plugin {
   };
 }
 
-// `0.0.0.0:8080` is the live-preview contract  don't change host/port.
+/**
+ * Block access to source files (TS, JS, config files) in development.
+ * Returns 404 for any request trying to access source code.
+ */
+function blockSourceFilesPlugin(): Plugin {
+  return {
+    name: "block-source-files",
+    apply: "serve",
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        const url = req.url || "";
+        const blockedPatterns = [
+          /\.tsx?$/,
+          /\.jsx?$/,
+          /\.mjs$/,
+          /\.cjs$/,
+          /vite\.config\.ts$/,
+          /tsconfig\.json$/,
+          /\.json$/,
+          /package\.json$/,
+          /package-lock\.json$/,
+        ];
+        if (blockedPatterns.some((pattern) => pattern.test(url))) {
+          res.statusCode = 404;
+          res.setHeader("Content-Type", "text/plain; charset=utf-8");
+          res.end("Not Found");
+          return;
+        }
+        next();
+      });
+    },
+  };
+}
+
+// `0.0.0.0:8080` is the live-preview contract — don't change host/port.
 export default defineConfig(({ command, isPreview }) => ({
   server: {
     host: "0.0.0.0",
@@ -65,6 +99,7 @@ export default defineConfig(({ command, isPreview }) => ({
   resolve: { tsconfigPaths: true },
   plugins: [
     pgliteBootstrapPlugin(),
+    blockSourceFilesPlugin(),
     // Dev-only /__app-env
     appEnvPlugin(),
     tailwindcss(),
