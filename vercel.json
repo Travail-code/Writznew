@@ -3,7 +3,6 @@
   "buildCommand": "npm run build",
   "installCommand": "npm install",
   "headers": [
-  "headers": [
     {
       "source": "/(.*)",
       "headers": [
